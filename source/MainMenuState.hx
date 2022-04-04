@@ -280,11 +280,13 @@ class MainMenuState extends MusicBeatState
 		menuItems.forEach(function(spr:FlxSprite)
 		{
 			spr.animation.play('idle');
+			spr.color = FlxColor.GRAY;
 			spr.updateHitbox();
 
 			if (spr.ID == curSelected)
 			{
 				spr.animation.play('selected');
+				spr.color = FlxColor.WHITE;
 				var add:Float = 0;
 				if(menuItems.length > 4) {
 					add = menuItems.length * 8;
