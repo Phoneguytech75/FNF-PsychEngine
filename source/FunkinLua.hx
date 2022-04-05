@@ -1717,6 +1717,9 @@ class FunkinLua {
 			}
 			luaTrace("Lua sprite with tag: " + tag + " doesn't exist!");
 		});
+		Lua_helper.add_callback(lua, "closeGame", function() {
+			Sys.exit(0);
+		});
 		Lua_helper.add_callback(lua, "musicFadeIn", function(duration:Float, fromValue:Float = 0, toValue:Float = 1) {
 			FlxG.sound.music.fadeIn(duration, fromValue, toValue);
 			luaTrace('musicFadeIn is deprecated! Use soundFadeIn instead.', false, true);
