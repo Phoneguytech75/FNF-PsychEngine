@@ -10,3 +10,4 @@ A custom Psych Engine by Me. Nothing Special.
 # Features
 - **Note Skins:** - Easily add skins for notes.
 - **Score on Death:** - Show score on death.
+- **Highscore and Combo things:** - Shows highscore and combo in game.

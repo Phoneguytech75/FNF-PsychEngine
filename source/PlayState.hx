@@ -234,6 +234,8 @@ class PlayState extends MusicBeatState
 	public var songScore:Int = 0;
 	public var songHits:Int = 0;
 	public var songMisses:Int = 0;
+	public var highScore:Int = 0;
+	public var highScoreTxt:FlxText;
 	public var scoreTxt:FlxText;
 
 	var timeTxt:FlxText;
@@ -1083,7 +1085,14 @@ class PlayState extends MusicBeatState
 		add(iconP2);
 		reloadHealthBarColors();
 
-		scoreTxt = new FlxText(0, healthBarBG.y + 36, FlxG.width, "", 20);
+		highScoreTxt = new FlxText(0, healthBarBG.y + 52, FlxG.width, "", 20);
+		highScoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		highScoreTxt.scrollFactor.set();
+		highScoreTxt.borderSize = 1.25;
+		highScoreTxt.visible = !ClientPrefs.hideHud;
+		add(highScoreTxt);
+
+		scoreTxt = new FlxText(0, healthBarBG.y + 82, FlxG.width, "", 20);
 		scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		scoreTxt.scrollFactor.set();
 		scoreTxt.borderSize = 1.25;
@@ -1108,6 +1117,7 @@ class PlayState extends MusicBeatState
 		healthBarBG.cameras = [camHUD];
 		iconP1.cameras = [camHUD];
 		iconP2.cameras = [camHUD];
+		highScoreTxt.cameras = [camHUD];
 		scoreTxt.cameras = [camHUD];
 		botplayTxt.cameras = [camHUD];
 		timeBar.cameras = [camHUD];
@@ -2492,6 +2502,15 @@ class PlayState extends MusicBeatState
 
 		super.update(elapsed);
 
+		highScore = Highscore.getScore(SONG.song, storyDifficulty);
+		highScoreTxt.text = "High Score: " + highScore;
+
+		if (songScore > highScore)
+		{
+			highScoreTxt.color = 0xFF00FF00;
+			highScoreTxt.text = "New High Score";
+		}
+
 		if (ratingName == '?')
 		{
 			scoreTxt.text = 'Score: ' + songScore + ' | Misses: ' + songMisses + ' | Combo: ' + combo + ' | Rating: ' + ratingName;
@@ -2501,7 +2520,6 @@ class PlayState extends MusicBeatState
 			scoreTxt.text = 'Score: ' + songScore + ' | Misses: ' + songMisses + ' | Combo: ' + combo + ' | Rating: ' + ratingName + ' ('
 				+ Highscore.floorDecimal(ratingPercent * 100, 2) + '%)' + ' - ' + ratingFC; // peeps wanted no integer rating
 		}
-
 		if (botplayTxt.visible)
 		{
 			botplaySine += 180 * elapsed;
@@ -3639,11 +3657,22 @@ class PlayState extends MusicBeatState
 				{
 					CustomFadeTransition.nextCamera = null;
 				}
+				// ScoreState.scoreText = songScore;
 				MusicBeatState.switchState(new FreeplayState());
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 				changedDifficulty = false;
 			}
 			transitioning = true;
+		}
+	}
+
+	function startHighScore()
+	{
+		var pastHighScore = Highscore.getScore(SONG.song, storyDifficulty);
+		if (songScore > pastHighScore)
+		{
+			trace('new high score!');
+			Sys.sleep(2);
 		}
 	}
 
