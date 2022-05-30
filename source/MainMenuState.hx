@@ -51,9 +51,13 @@ class MainMenuState extends MusicBeatState
 	var camFollowPos:FlxObject;
 	var debugKeys:Array<FlxKey>;
 
+	var bg:FlxSprite;
+
 	override function create()
 	{
 		WeekData.loadTheFirstEnabledMod();
+
+		FlxG.camera.bgColor = FlxColor.TRANSPARENT;
 
 		#if desktop
 		// Updating Discord Rich Presence
@@ -75,7 +79,7 @@ class MainMenuState extends MusicBeatState
 		persistentUpdate = persistentDraw = true;
 
 		var yScroll:Float = Math.max(0.25 - (0.05 * (optionShit.length - 4)), 0.1);
-		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuBG'));
+		bg = new FlxSprite(-80).loadGraphic(Paths.image('menuBG'));
 		bg.scrollFactor.set(0, yScroll);
 		bg.setGraphicSize(Std.int(bg.width * 1.175));
 		bg.updateHitbox();
@@ -217,19 +221,26 @@ class MainMenuState extends MusicBeatState
 					selectedSomethin = true;
 					FlxG.sound.play(Paths.sound('confirmMenu'));
 
-					if (ClientPrefs.flashing)
-						FlxFlicker.flicker(magenta, 1.1, 0.15, false);
+					// if (ClientPrefs.flashing)
+					// {	
+					// 	FlxG.camera.flash(FlxColor.WHITE, 1);
+					// }
+					
+					FlxTween.tween(bg, {angle: 45}, 1.8, {ease: FlxEase.expoIn});
+					
+					FlxTween.tween(FlxG.camera, { zoom: .925}, .6, { 
+						ease: FlxEase.expoIn
+					})
+					.then(FlxTween.tween(FlxG.camera, {zoom: 8, alpha: 0}, 1.2, {
+						ease: FlxEase.expoIn,
+					}));
 
 					menuItems.forEach(function(spr:FlxSprite)
 					{
 						if (curSelected != spr.ID)
 						{
-							FlxTween.tween(spr, {alpha: 0}, 0.4, {
+							FlxTween.tween(spr, {y: spr.y + 100, alpha: 0}, 0.4, {
 								ease: FlxEase.quadOut,
-								onComplete: function(twn:FlxTween)
-								{
-									spr.kill();
-								}
 							});
 						}
 						else

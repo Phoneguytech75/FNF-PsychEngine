@@ -13,7 +13,9 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
+import flixel.tweens.FlxTween.FlxTweenType;
 import lime.utils.Assets;
 import flixel.system.FlxSound;
 import openfl.utils.Assets as OpenFlAssets;
@@ -118,7 +120,8 @@ class FreeplayState extends MusicBeatState
 		{
 			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false);
 			songText.isMenuItem = true;
-			songText.targetY = i;
+			songText.isInFreeplay = true;
+			songText.targetY = 0;
 			grpSongs.add(songText);
 
 			if (songText.width > 980)
@@ -501,6 +504,12 @@ class FreeplayState extends MusicBeatState
 			if (item.targetY == 0)
 			{
 				item.alpha = 1;
+				FlxTween.tween(item, { x: 150}, 0.4, { ease: FlxEase.quadInOut, onStart: function(twn:FlxTween)
+				{
+						item.x = 150;	
+				},
+				type: FlxTweenType.PERSIST
+				});
 				// item.setGraphicSize(Std.int(item.width));
 			}
 		}

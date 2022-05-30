@@ -2511,7 +2511,7 @@ class PlayState extends MusicBeatState
 		if (songScore > highScore)
 		{
 			highScoreTxt.color = 0xFF00FF00;
-			highScoreTxt.text = "New High Score";
+			highScoreTxt.text = "New High Score by " + (songScore - highScore) + "!";
 		}
 
 		if (ratingName == '?')
