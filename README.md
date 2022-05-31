@@ -1,4 +1,4 @@
-# Custom Psych Engine
+# Psych Engine: Sunset Edition
 
 A custom Psych Engine by Me. Nothing Special.
 
