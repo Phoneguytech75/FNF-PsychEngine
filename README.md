@@ -1,4 +1,5 @@
 # Psych Engine: Sunset Edition
+![Sunset Logo](/art/sunsetLogo.png)
 
 A custom Psych Engine by Me. Nothing Special.
 
