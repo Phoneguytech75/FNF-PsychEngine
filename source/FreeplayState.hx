@@ -212,6 +212,13 @@ class FreeplayState extends MusicBeatState
 		text.setFormat(Paths.font("vcr.ttf"), size, FlxColor.WHITE, RIGHT);
 		text.scrollFactor.set();
 		add(text);
+
+		FlxG.camera.zoom = 5;
+		FlxG.camera.angle = 45;
+		FlxTween.tween(FlxG.camera, {zoom: 1, angle: 0}, .6, {
+			ease: FlxEase.expoOut
+		});
+
 		super.create();
 	}
 

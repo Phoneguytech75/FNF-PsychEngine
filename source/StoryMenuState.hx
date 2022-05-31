@@ -13,6 +13,7 @@ import flixel.group.FlxGroup;
 import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import lime.net.curl.CURLCode;
@@ -184,6 +185,12 @@ class StoryMenuState extends MusicBeatState
 
 		changeWeek();
 		changeDifficulty();
+
+		FlxG.camera.zoom = 5;
+		FlxG.camera.angle = 45;
+		FlxTween.tween(FlxG.camera, {zoom: 1, angle: 0}, .6, {
+			ease: FlxEase.expoOut
+		});
 
 		super.create();
 	}
