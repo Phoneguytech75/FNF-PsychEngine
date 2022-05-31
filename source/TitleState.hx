@@ -81,6 +81,8 @@ class TitleState extends MusicBeatState
 	
 	public static var updateVersion:String = '';
 
+	var bg:FlxSprite;
+
 	override public function create():Void
 	{
 		Paths.clearStoredMemory();
@@ -254,7 +256,7 @@ class TitleState extends MusicBeatState
 		Conductor.changeBPM(titleJSON.bpm);
 		persistentUpdate = true;
 
-		var bg:FlxSprite = new FlxSprite();
+		bg = new FlxSprite();
 		
 		if (titleJSON.backgroundSprite != null && titleJSON.backgroundSprite.length > 0 && titleJSON.backgroundSprite != "none"){
 			bg.loadGraphic(Paths.image(titleJSON.backgroundSprite));
@@ -441,13 +443,10 @@ class TitleState extends MusicBeatState
 
 				FlxG.camera.flash(FlxColor.WHITE, 1);
 				FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
-
-				FlxTween.tween(FlxG.camera, { zoom: .91}, .6, { 
-					ease: FlxEase.quadOut
-				})
-				.then(FlxTween.tween(FlxG.camera, {zoom: 8, alpha: 0}, 1.2, {
-					ease: FlxEase.quintOut,
-				}));
+				
+				FlxTween.tween(FlxG.camera, {zoom: 8, alpha: 0}, 1.2, {
+					ease: FlxEase.expoIn,
+				});
 
 				transitioning = true;
 				// FlxG.sound.music.stop();

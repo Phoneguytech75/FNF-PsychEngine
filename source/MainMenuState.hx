@@ -226,14 +226,11 @@ class MainMenuState extends MusicBeatState
 					// 	FlxG.camera.flash(FlxColor.WHITE, 1);
 					// }
 					
-					FlxTween.tween(bg, {angle: 45}, 1.8, {ease: FlxEase.expoIn});
+					FlxTween.tween(bg, {angle: 45}, 1.2, {ease: FlxEase.expoIn});
 					
-					FlxTween.tween(FlxG.camera, { zoom: .925}, .6, { 
-						ease: FlxEase.expoIn
-					})
-					.then(FlxTween.tween(FlxG.camera, {zoom: 8, alpha: 0}, 1.2, {
+					FlxTween.tween(FlxG.camera, {zoom: 8, alpha: 0}, 1.2, {
 						ease: FlxEase.expoIn,
-					}));
+					});
 
 					menuItems.forEach(function(spr:FlxSprite)
 					{
