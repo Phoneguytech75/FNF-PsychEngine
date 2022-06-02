@@ -25,7 +25,7 @@ using StringTools;
 
 class MainMenuState extends MusicBeatState
 {
-	public static var psychEngineVersion:String = '0.5.2h'; // This is also used for Discord RPC
+	public static var psychEngineVersion:String = '0.5.2s'; // This is also used for Discord RPC
 	public static var curSelected:Int = 0;
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
@@ -163,6 +163,11 @@ class MainMenuState extends MusicBeatState
 			}
 		}
 		#end
+
+		FlxG.camera.zoom = 5;
+		FlxTween.tween(FlxG.camera, {zoom: 1}, .6, {
+			ease: FlxEase.expoOut
+		});
 
 		super.create();
 	}
