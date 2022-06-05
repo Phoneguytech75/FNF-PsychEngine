@@ -3,6 +3,9 @@
 
 A custom Psych Engine by Me. Nothing Special.
 
+
+If you get an error about StatePointer when using Lua, run `haxelib remove linc_luajit` into Command Prompt/PowerShell, then re-install linc_luajit.
+
 ## Credits:
 * **lemz1 and lemz3** - For helping with the Arrow Skins settings.
 

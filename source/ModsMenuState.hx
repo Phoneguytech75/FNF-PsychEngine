@@ -272,6 +272,9 @@ class ModsMenuState extends MusicBeatState
 		// more buttons
 		var startX:Int = 1100;
 
+
+
+
 		/*
 			installButton = new FlxButton(startX, 620, "Install Mod", function()
 			{
@@ -286,10 +289,19 @@ class ModsMenuState extends MusicBeatState
 			add(installButton);
 			startX -= 180;
 
-			removeButton = new FlxButton(startX, 620, "Delete Selected Mod", function()
-			{
-				var path = haxe.io.Path.join([Paths.mods(), modsList[curSelected][0]]);
-				if(FileSystem.exists(path) && FileSystem.isDirectory(path))
+					var icon = mods[curSelected].icon;
+					var alphabet = mods[curSelected].alphabet;
+					remove(icon);
+					remove(alphabet);
+					icon.destroy();
+					alphabet.destroy();
+					modsList.remove(modsList[curSelected]);
+					mods.remove(mods[curSelected]);
+
+					if(curSelected >= mods.length) --curSelected;
+					changeSelection();
+				}
+				catch(e)
 				{
 					trace('Trying to delete directory ' + path);
 					try
@@ -377,10 +389,9 @@ class ModsMenuState extends MusicBeatState
 			i++;
 		}
 
-		if (curSelected >= mods.length)
-			curSelected = 0;
+		if(curSelected >= mods.length) curSelected = 0;
 
-		if (mods.length < 1)
+		if(mods.length < 1)
 			bg.color = defaultColor;
 		else
 			bg.color = mods[curSelected].color;
@@ -477,6 +488,7 @@ class ModsMenuState extends MusicBeatState
 
 		var path:String = 'modsList.txt';
 		File.saveContent(path, fileStr);
+		Paths.pushGlobalMods();
 	}
 
 	var noModsSine:Float = 0;
@@ -764,7 +776,7 @@ class ModMetadata
 		this.color = ModsMenuState.defaultColor;
 		this.restart = false;
 
-		// Try loading json
+		//Try loading json
 		var path = Paths.mods(folder + '/pack.json');
 		if (FileSystem.exists(path))
 		{
@@ -772,13 +784,13 @@ class ModMetadata
 			if (rawJson != null && rawJson.length > 0)
 			{
 				var stuff:Dynamic = Json.parse(rawJson);
-				// using reflects cuz for some odd reason my haxe hates the stuff.var shit
-				var colors:Array<Int> = Reflect.getProperty(stuff, "color");
-				var description:String = Reflect.getProperty(stuff, "description");
-				var name:String = Reflect.getProperty(stuff, "name");
-				var restart:Bool = Reflect.getProperty(stuff, "restart");
+					//using reflects cuz for some odd reason my haxe hates the stuff.var shit
+					var colors:Array<Int> = Reflect.getProperty(stuff, "color");
+					var description:String = Reflect.getProperty(stuff, "description");
+					var name:String = Reflect.getProperty(stuff, "name");
+					var restart:Bool = Reflect.getProperty(stuff, "restart");
 
-				if (name != null && name.length > 0)
+				if(name != null && name.length > 0)
 				{
 					this.name = name;
 				}

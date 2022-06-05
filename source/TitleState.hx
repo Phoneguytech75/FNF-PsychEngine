@@ -39,7 +39,7 @@ import openfl.Assets;
 using StringTools;
 typedef TitleData =
 {
-	
+
 	titlex:Float,
 	titley:Float,
 	startx:Float,
@@ -76,9 +76,9 @@ class TitleState extends MusicBeatState
 	#end
 
 	var mustUpdate:Bool = false;
-	
+
 	var titleJSON:TitleData;
-	
+
 	public static var updateVersion:String = '';
 
 	var bg:FlxSprite;
@@ -88,9 +88,10 @@ class TitleState extends MusicBeatState
 		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
 
+		Paths.pushGlobalMods();
 		// Just to load a mod on start up if ya got one. For mods that change the menu music and bg
 		WeekData.loadTheFirstEnabledMod();
-		
+
 		//trace(path, FileSystem.exists(path));
 
 		/*#if (polymod && !html5)
@@ -107,12 +108,12 @@ class TitleState extends MusicBeatState
 			}
 		}
 		#end*/
-		
+
 		#if CHECK_FOR_UPDATES
 		if(!closedState) {
 			trace('checking for update');
 			var http = new haxe.Http("https://raw.githubusercontent.com/ShadowMario/FNF-PsychEngine/main/gitVersion.txt");
-			
+
 			http.onData = function (data:String)
 			{
 				updateVersion = data.split('\n')[0].trim();
@@ -123,11 +124,11 @@ class TitleState extends MusicBeatState
 					mustUpdate = true;
 				}
 			}
-			
+
 			http.onError = function (error) {
 				trace('error: $error');
 			}
-			
+
 			http.request();
 		}
 		#end
@@ -148,14 +149,14 @@ class TitleState extends MusicBeatState
 		super.create();
 
 		FlxG.save.bind('funkin', 'ninjamuffin99');
-		
+
 		ClientPrefs.loadPrefs();
-		
+
 		Highscore.load();
 
 		// IGNORE THIS!!!
 		titleJSON = Json.parse(Paths.getTextFromFile('images/gfDanceTitle.json'));
-		
+
 		#if TITLE_SCREEN_EASTER_EGG
 		if (FlxG.save.data.psychDevsEasterEgg == null) FlxG.save.data.psychDevsEasterEgg = ''; //Crash prevention
 		switch(FlxG.save.data.psychDevsEasterEgg.toUpperCase())
@@ -175,10 +176,15 @@ class TitleState extends MusicBeatState
 		}
 		#end
 
-		if(!initialized && FlxG.save.data != null && FlxG.save.data.fullscreen)
+		if(!initialized)
 		{
-			FlxG.fullscreen = FlxG.save.data.fullscreen;
-			//trace('LOADED FULLSCREEN SETTING!!');
+			if(FlxG.save.data != null && FlxG.save.data.fullscreen)
+			{
+				FlxG.fullscreen = FlxG.save.data.fullscreen;
+				//trace('LOADED FULLSCREEN SETTING!!');
+			}
+			persistentUpdate = true;
+			persistentDraw = true;
 		}
 
 		if (FlxG.save.data.weekCompleted != null)
@@ -233,7 +239,7 @@ class TitleState extends MusicBeatState
 				new FlxRect(-300, -300, FlxG.width * 1.8, FlxG.height * 1.8));
 			FlxTransitionableState.defaultTransOut = new TransitionData(FADE, FlxColor.BLACK, 0.7, new FlxPoint(0, 1),
 				{asset: diamond, width: 32, height: 32}, new FlxRect(-300, -300, FlxG.width * 1.8, FlxG.height * 1.8));
-				
+
 			transIn = FlxTransitionableState.defaultTransIn;
 			transOut = FlxTransitionableState.defaultTransOut;*/
 
@@ -261,7 +267,7 @@ class TitleState extends MusicBeatState
 		}else{
 			bg.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		}
-		
+
 		// bg.antialiasing = ClientPrefs.globalAntialiasing;
 		// bg.setGraphicSize(Std.int(bg.width * 0.6));
 		// bg.updateHitbox();
@@ -269,7 +275,7 @@ class TitleState extends MusicBeatState
 
 		logoBl = new FlxSprite(titleJSON.titlex, titleJSON.titley);
 		logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
-		
+
 		logoBl.antialiasing = ClientPrefs.globalAntialiasing;
 		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24, false);
 		logoBl.animation.play('bump');
@@ -313,7 +319,7 @@ class TitleState extends MusicBeatState
 				gfDance.animation.addByIndices('danceRight', 'gfDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
 		}
 		gfDance.antialiasing = ClientPrefs.globalAntialiasing;
-		
+
 		add(gfDance);
 		gfDance.shader = swagShader.shader;
 		add(logoBl);
@@ -333,7 +339,7 @@ class TitleState extends MusicBeatState
 		//trace(path, FileSystem.exists(path));
 		titleText.frames = FlxAtlasFrames.fromSparrow(BitmapData.fromFile(path),File.getContent(StringTools.replace(path,".png",".xml")));
 		#else
-		
+
 		titleText.frames = Paths.getSparrowAtlas('titleEnter');
 		#end
 		titleText.animation.addByPrefix('idle', "Press Enter to Begin", 24);
@@ -564,7 +570,7 @@ class TitleState extends MusicBeatState
 	{
 		super.beatHit();
 
-		if(logoBl != null) 
+		if(logoBl != null)
 			logoBl.animation.play('bump', true);
 
 		if(gfDance != null) {
@@ -671,14 +677,14 @@ class TitleState extends MusicBeatState
 						FlxG.sound.play(Paths.sound('JingleShadow'));
 					case 'BBPANZU':
 						sound = FlxG.sound.play(Paths.sound('JingleBB'));
-					
+
 					default: //Go back to normal ugly ass boring GF
 						remove(ngSpr);
 						remove(credGroup);
 						FlxG.camera.flash(FlxColor.WHITE, 2);
 						skippedIntro = true;
 						playJingle = false;
-						
+
 						FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 						FlxG.sound.music.fadeIn(4, 0, 0.7);
 						return;
