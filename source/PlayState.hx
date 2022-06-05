@@ -1005,7 +1005,7 @@ class PlayState extends MusicBeatState
 		timeTxt.borderSize = 2;
 		timeTxt.visible = showTime;
 		if (ClientPrefs.downScroll)
-			// timeTxt.y = FlxG.height - 44;
+			timeTxt.y = FlxG.height - 44;
 
 			if (ClientPrefs.timeBarType == 'Song Name')
 			{
@@ -1149,7 +1149,7 @@ class PlayState extends MusicBeatState
 		healthBarBG.yAdd = -4;
 		add(healthBarBG);
 		if (ClientPrefs.downScroll)
-			healthBarBG.y = 0.15 * FlxG.height;
+			healthBarBG.y = 0.11 * FlxG.height;
 
 		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
 			'health', 0, 2);
