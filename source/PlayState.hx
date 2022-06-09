@@ -1113,8 +1113,8 @@ class PlayState extends MusicBeatState
 			{
 				luaArray.push(new FunkinLua(luaToLoad));
 			}
-			#end
 		}
+		#end
 		for (event in eventPushedMap.keys())
 		{
 			#if MODS_ALLOWED
@@ -1518,7 +1518,6 @@ class PlayState extends MusicBeatState
 				doPush = true;
 			}
 		}
-		#else
 		luaFile = Paths.getPreloadPath(luaFile);
 		if(Assets.exists(luaFile)) {
 			doPush = true;
