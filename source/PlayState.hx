@@ -1520,7 +1520,6 @@ class PlayState extends MusicBeatState
 		if(Assets.exists(luaFile)) {
 			doPush = true;
 		}
-		#end
 
 		if(doPush)
 		{

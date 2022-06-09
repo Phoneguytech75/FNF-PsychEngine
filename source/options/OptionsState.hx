@@ -48,8 +48,10 @@ class OptionsState extends MusicBeatState
 				openSubState(new options.GameplaySettingsSubState());
 			case 'Adjust Delay and Combo':
 				LoadingState.loadAndSwitchState(new options.NoteOffsetState());
+			#if MODS_ALLOWED
 			case 'Note Skins':
 				LoadingState.loadAndSwitchState(new options.NoteSkinState());	
+			#end	
 		}
 		
 	}
