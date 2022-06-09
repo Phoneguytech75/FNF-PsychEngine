@@ -1,6 +1,8 @@
 package options;
 
-import sys.FileSystem;
+#if MODS_ALLOWED    
+    import sys.FileSystem;
+#end    
 import flixel.FlxG;
 import flixel.text.FlxText;
 import flixel.group.FlxGroup;
