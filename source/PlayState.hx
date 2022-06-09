@@ -4185,7 +4185,6 @@ class PlayState extends MusicBeatState
 		if (songScore > pastHighScore)
 		{
 			trace('new high score!');
-			Sys.sleep(2);
 		}
 	}
 
